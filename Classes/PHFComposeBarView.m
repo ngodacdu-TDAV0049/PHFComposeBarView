@@ -123,6 +123,8 @@ static CGFloat kTextViewToSuperviewHeightDelta;
 
     [self updateCharCountLabel];
     [self resizeTextViewIfNeededAnimated:NO];
+    
+    [self resizeTextContainerView];
 }
 
 #pragma mark - UITextViewDelegate
@@ -372,6 +374,17 @@ static CGFloat kTextViewToSuperviewHeightDelta;
     return _textContainer;
 }
 
+- (void)resizeTextContainerView {
+    CGFloat originX = CGRectGetMaxX(_utilityButton.frame) + kHorizontalSpacing;
+    CGFloat sizeWidth = CGRectGetMinX(_charCountLabel.frame) - originX;
+    
+    CGRect textContainerFrame = CGRectMake(originX,
+                                           kTextContainerTopMargin,
+                                           sizeWidth,
+                                           [self bounds].size.height - kTextContainerTopMargin - kTextContainerBottomMargin);
+    [_textContainer setFrame:textContainerFrame];
+}
+
 @synthesize textView = _textView;
 - (UITextView *)textView {
     if (!_textView) {
@@ -614,6 +627,17 @@ static CGFloat kTextViewToSuperviewHeightDelta;
     [self addSubview:[self textContainer]];
 
     [self resizeButton];
+}
+
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    if (!self.window) {
+        return;
+    }
+    if (@available(iOS 11.0, *)) {
+        [self.bottomAnchor constraintLessThanOrEqualToSystemSpacingBelowAnchor:self.window.safeAreaLayoutGuide.bottomAnchor
+                                                                    multiplier:1.0].active = YES;
+    }
 }
 
 - (void)setupDelegateChainForTextView {
