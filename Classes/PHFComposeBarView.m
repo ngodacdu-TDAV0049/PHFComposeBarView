@@ -376,7 +376,7 @@ static CGFloat kTextViewToSuperviewHeightDelta;
 
 - (void)resizeTextContainerView {
     CGFloat originX = CGRectGetMaxX(_utilityButton.frame) + kHorizontalSpacing;
-    CGFloat sizeWidth = CGRectGetMinX(_charCountLabel.frame) - originX;
+    CGFloat sizeWidth = CGRectGetMinX(_button.frame) - originX;
     
     CGRect textContainerFrame = CGRectMake(originX,
                                            kTextContainerTopMargin,
